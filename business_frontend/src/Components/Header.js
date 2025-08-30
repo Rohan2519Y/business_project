@@ -10,4 +10,5 @@ export default function Header() {
                 <button style={{ width: '125px', height: '44px', background: 'linear-gradient(114.44deg, #3890C9 3.14%, #2B79AC 56.54%)', outline: 'none', border: '0px solid tranparent', borderRadius: '30px' }}></button>
             </div>
         </div>
-    </>)
+    </>)
+}
