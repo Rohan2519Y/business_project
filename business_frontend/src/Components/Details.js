@@ -1,4 +1,26 @@
+import { useState } from "react"
+import { postData } from "../BackendService"
+
 export default function Details() {
+
+    const [firstName, setFirstName] = useState('')
+    const [lastName, setLastName] = useState('')
+    const [email, setEmail] = useState('')
+    const [phone, setPhone] = useState('')
+    const [service, setService] = useState('')
+    const [message, setMessage] = useState('')
+    const [term, setTerm] = useState('')
+
+    const handleSubmit=async()=>{
+        const res=await postData('business/submit_data',{firstname:firstName, lastname:lastName, email, phone, service, message, term})
+        if(res.status){
+            alert('true')
+        }
+        else{
+            alert('fail')
+        }
+    }
+
     return (<>
         <div className="w-full h-[935px] bg-[linear-gradient(179.22deg,#E5F5FF_16.4%,#8BD1FF_60.42%,#E5F5FF_97.72%)] flex justify-center items-center relative mb-6">
             <div className="w-[90%] h-[80%] flex ">
@@ -23,13 +45,13 @@ export default function Details() {
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">First Name</div>
                             <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
-                                <input className="w-[90%] h-[90%] outline-none" />
+                                <input onChange={(e) => { setFirstName(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
                         </div>
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Last Name</div>
                             <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
-                                <input className="w-[90%] h-[90%] outline-none" />
+                                <input onChange={(e) => { setLastName(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
                         </div>
                     </div>
@@ -37,44 +59,46 @@ export default function Details() {
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Email</div>
                             <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
-                                <input className="w-[90%] h-[90%] outline-none" />
+                                <input onChange={(e) => { setEmail(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
                         </div>
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Phone Number</div>
                             <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
-                                <input className="w-[90%] h-[90%] outline-none" />
+                                <input onChange={(e) => { setPhone(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
                         </div>
                     </div>
                     <div className="w-full h-[134px] mt-6">
                         <div className="w-full h-[30%]">Service Type?</div>
                         <div className="w-full h-[70%] flex flex-wrap">
-                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" className="w-[18px] h-[18px]" />Web Application Security Audits</div>
-                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" className="w-[18px] h-[18px]" />PCI DSS Gap Assessments</div>
-                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" className="w-[18px] h-[18px]" />Cloud Security Assessments</div>
-                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" className="w-[18px] h-[18px]" />Security Awareness Training</div>
+                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='Web Application Security Audits' />Web Application Security Audits</div>
+                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='PCI DSS Gap Assessments' />PCI DSS Gap Assessments</div>
+                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='Cloud Security Assessments' />Cloud Security Assessments</div>
+                            <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='Security Awareness Training' />Security Awareness Training</div>
                         </div>
                     </div>
                     <div className="w-full h-[212px] mt-6">
                         <div className="w-full h-[24px] flex text-[16px] mb-2">Message</div>
                         <div className="w-full h-[185px] border-2 border-black box-border ">
                             <div className="w-full h-full p-4 bg-white box-border">
-                                <textarea className="w-full outline-none h-full" placeholder="Type your message..." />
+                                <textarea onChange={(e) => { setMessage(e.target.value) }} className="w-full outline-none h-full" placeholder="Type your message..." />
                             </div>
                         </div>
                     </div>
-                    <div className="w-full h-[40px] mt-6 flex items-center">
+                    <div className="w-full h-[40px] mt-6 flex items-center z-10">
                         <input
+                            checked={term === "Accepted"}
+                            onChange={(e) => setTerm(e.target.checked ? "Accepted" : null)}
                             type="checkbox"
                             className="w-[18px] h-[18px] mr-3 accent-blue-500 border-2 border-black"
                         />
                         I accept the <span className="underline ml-1">Terms</span>
                     </div>
-                    <button className="w-[148px] h-[48px] font-[400] text-[16px] bg-[#1387FB] mt-5 text-white shadow-[0px_6px_12px_rgba(0,0,0,0.1)]">Book your call</button>
+                    <button onClick={handleSubmit} className="w-[148px] h-[48px] font-[400] text-[16px] bg-[#1387FB] mt-5 text-white shadow-[0px_6px_12px_rgba(0,0,0,0.1)]">Book your call</button>
                 </div>
             </div>
-            <img src="./trust.png" className="w-[340px] absolute bottom-0 left-20 z-10 " />
+            <img src="./trust.png" className="w-[340px] absolute bottom-0 left-20 z-10 pointer-events-none" />
             <div className="absolute bottom-0 left-0 w-full h-[30px] bg-[linear-gradient(180deg,#9DD8FE_27.27%,#5E8198_142.42%)] [clip-path:polygon(4%_0%,96%_0%,100%_100%,0%_100%)]">
             </div>
         </div>
