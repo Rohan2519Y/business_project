@@ -12,6 +12,7 @@ export default function Details() {
     const [term, setTerm] = useState('')
 
     const handleSubmit=async()=>{
+        let error=true
         const res=await postData('business/submit_data',{firstname:firstName, lastname:lastName, email, phone, service, message, term})
         if(res.status){
             alert('true')
