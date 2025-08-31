@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { postData } from "../BackendService"
+import Popup from "./Popup"
 
 export default function Details() {
 
@@ -10,19 +11,31 @@ export default function Details() {
     const [service, setService] = useState('')
     const [message, setMessage] = useState('')
     const [term, setTerm] = useState('')
+    const [errors, setErrors] = useState({});
+    const [open, setOpen] = useState(false)
 
-    const handleSubmit=async()=>{
-        let error=true
-        const res=await postData('business/submit_data',{firstname:firstName, lastname:lastName, email, phone, service, message, term})
-        if(res.status){
-            alert('true')
-        }
-        else{
-            alert('fail')
+    const handleSubmit = async () => {
+        let newErrors = {};
+
+        if (!firstName) newErrors.firstName = true;
+        if (!lastName) newErrors.lastName = true;
+        if (!email) newErrors.email = true;
+        if (!phone) newErrors.phone = true;
+        if (!service) newErrors.service = true;
+        if (!message) newErrors.message = true;
+        setErrors(newErrors);
+        if (Object.keys(newErrors).length === 0) {
+            const res = await postData('business/submit_data', { firstname: firstName, lastname: lastName, email, phone, service, message, term })
+            if (res.status) {
+                setOpen(true)
+            } else {
+                alert('fail');
+            }
         }
     }
 
     return (<>
+        {open && <Popup open={open} setOpen={setOpen} />}
         <div className="w-full h-[935px] bg-[linear-gradient(179.22deg,#E5F5FF_16.4%,#8BD1FF_60.42%,#E5F5FF_97.72%)] flex justify-center items-center relative mb-6">
             <div className="w-[90%] h-[80%] flex ">
                 <div className="w-1/2 ">
@@ -45,29 +58,33 @@ export default function Details() {
                     <div className="w-full h-[80px] flex justify-between">
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">First Name</div>
-                            <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
+                            <div className={`w-full h-[48px] flex justify-center items-center bg-white border-2 ${errors.firstName && firstName.length == 0 ? 'border-red-500' : 'border-black'}`}>
                                 <input onChange={(e) => { setFirstName(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
+                            {errors.firstName && firstName.length == 0 ? <label className="text-red-500 font-medium">Please Enter First Name</label> : <></>}
                         </div>
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Last Name</div>
-                            <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
+                            <div className={`w-full h-[48px] flex justify-center items-center bg-white border-2 ${errors.lastName && lastName.length == 0 ? 'border-red-500' : 'border-black'}`}>
                                 <input onChange={(e) => { setLastName(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
+                            {errors.lastName && lastName.length == 0 ? <label className="text-red-500 font-medium">Please Enter Last Name</label> : <></>}
                         </div>
                     </div>
                     <div className="w-full h-[80px] flex justify-between mt-6">
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Email</div>
-                            <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
+                            <div className={`w-full h-[48px] flex justify-center items-center bg-white border-2 ${errors.email && email.length == 0 ? 'border-red-500' : 'border-black'}`}>
                                 <input onChange={(e) => { setEmail(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
+                            {errors.email && email.length == 0 ? <label className="text-red-500 font-medium">Please Enter Email</label> : <></>}
                         </div>
                         <div className="w-[48%] h-full">
                             <div className="w-full h-[32px]">Phone Number</div>
-                            <div className="w-full h-[48px] flex justify-center items-center bg-white border-2 border-black">
+                            <div className={`w-full h-[48px] flex justify-center items-center bg-white border-2 ${errors.phone && phone.length == 0 ? 'border-red-500' : 'border-black'}`}>
                                 <input onChange={(e) => { setPhone(e.target.value) }} className="w-[90%] h-[90%] outline-none" />
                             </div>
+                            {errors.phone && phone.length == 0 ? <label className="text-red-500 font-medium">Please Enter Phone Number</label> : <></>}
                         </div>
                     </div>
                     <div className="w-full h-[134px] mt-6">
@@ -77,14 +94,16 @@ export default function Details() {
                             <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='PCI DSS Gap Assessments' />PCI DSS Gap Assessments</div>
                             <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='Cloud Security Assessments' />Cloud Security Assessments</div>
                             <div className="w-[50%] gap-x-3 h-[24px] flex items-center font-[600]"><input type="radio" name='service' className="w-[18px] h-[18px]" onChange={(e) => { setService(e.target.value) }} value='Security Awareness Training' />Security Awareness Training</div>
+                            {errors.service && service.length == 0 ? <label className="text-red-500 font-medium">Please Choose Service</label> : <></>}
                         </div>
                     </div>
                     <div className="w-full h-[212px] mt-6">
                         <div className="w-full h-[24px] flex text-[16px] mb-2">Message</div>
-                        <div className="w-full h-[185px] border-2 border-black box-border ">
+                        <div className={`w-full h-[185px] border-2 border-black box-border ${errors.message && message.length == 0 ? 'border-red-500' : 'border-black'}`}>
                             <div className="w-full h-full p-4 bg-white box-border">
                                 <textarea onChange={(e) => { setMessage(e.target.value) }} className="w-full outline-none h-full" placeholder="Type your message..." />
                             </div>
+                            {errors.message && message.length == 0 ? <label className="text-red-500 font-medium">Please Enter Message</label> : <></>}
                         </div>
                     </div>
                     <div className="w-full h-[40px] mt-6 flex items-center z-10">
