@@ -36,7 +36,7 @@ export default function Details() {
 
     return (<>
         {open && <Popup open={open} setOpen={setOpen} />}
-        <div className="w-full h-[935px] bg-[linear-gradient(179.22deg,#E5F5FF_16.4%,#8BD1FF_60.42%,#E5F5FF_97.72%)] flex justify-center items-center relative mb-6">
+        <div className="w-full h-[935px] bg-[linear-gradient(179.22deg,#E5F5FF_16.4%,#8BD1FF_60.42%,#E5F5FF_97.72%)] flex justify-center items-center relative ">
             <div className="w-[90%] h-[80%] flex ">
                 <div className="w-1/2 ">
                     <div className="text-[16px] font-[600] w-full h-[3%]">Contact Us</div>
