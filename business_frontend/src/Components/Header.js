@@ -1,7 +1,7 @@
 export default function Header() {
     return (
         <>
-            <div className="w-full h-[72px] flex justify-between items-center">
+            <div className="w-full h-[72px] flex justify-between items-center ">
                 <div className="w-[15%]  h-full flex justify-center items-center">
                     <img src="./image.png" className="md:w-[84px] max-h-[36px]" alt="logo" />
                 </div>
@@ -11,7 +11,7 @@ export default function Header() {
                     </div>
                     <div className="w-1/3 h-full flex justify-center items-center">
                         Services
-                        <img src="./down.png" className="w-5 mt-[7px] ml-1" alt="down"
+                        <img src="./down.png" className="w-5  md:mt-[7px] ml-1" alt="down"
                         />
                     </div>
                     <div className="w-1/3 h-full flex justify-center items-center">
